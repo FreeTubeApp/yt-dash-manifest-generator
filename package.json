@@ -6,15 +6,25 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GilgusMaximus/yt-subscription-count-scraper"
+  },
+  "keywords": [
+    "youtube",
+    "dash",
+    "manifest",
+    "generator",
+    "dash manifest generator",
+    "high quality",
+    "1080p+"
+  ],
+  "author": "GilgusMaximus <software@lucahohmann.com>",
   "license": "ISC",
   "dependencies": {
     "xml-js": "^1.6.11",
-    "xmlbuilder": "^15.1.1",
     "ytdl-core": "^3.2.2"
   },
   "devDependencies": {
-    "ytdl-core": "^3.2.2"
+    }
   }
-}
