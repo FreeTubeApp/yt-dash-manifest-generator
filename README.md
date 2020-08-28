@@ -27,3 +27,10 @@ generate_dash_file_from_json_data_from_id(VideoId, VideoLength).then((xmlData) =
     console.error(error)
 })
 ```
+
+**generate_dash_file_from_formats(VideoFormats, VideoLength)**
+
+Takes an array of formats in the way which yt-dl-core provides it as well as the video length in seconds and generates the xml file 
+```javascript
+const xml_string = generate_dash_file_from_formats(VideoFormats, VideoLength)
+```

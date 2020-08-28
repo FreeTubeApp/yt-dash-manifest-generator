@@ -1,11 +1,17 @@
 const ytdl = require('ytdl-core');
 const xml = require('xml-js')
 class DashGenerator {
-    // if you already have the getInfo data from ytdl-core use this function
+    // if you already have the getInfo data from ytdl-core as a string, use this function
     static generate_dash_file_from_json_data(JsonStringData, VideoLength) {
         const jsonObject = JSON.parse(JsonStringData)
         const videoFormats = jsonObject.formats
         const generatedJSON = this.generate_xmljs_json_from_data(videoFormats, VideoLength)
+        return xml.json2xml(generatedJSON)
+    }
+
+    // use this if you already have aformats array
+    static generate_dash_file_from_formats(VideoFormats, VideoLength) {
+        const generatedJSON = this.generate_xmljs_json_from_data(VideoFormats, VideoLength)
         return xml.json2xml(generatedJSON)
     }
 
