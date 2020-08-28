@@ -11,117 +11,107 @@ class DashGenerator {
 
     // if you do not have the data from ytdl-core already, use this function
     static async get_yt_json_data(VideoId, VideoLength) {
-        const data = await ytdl.getInfo(VideoId).then(videoInfo => {
+        return await ytdl.getInfo(VideoId).then(videoInfo => {
             const jsonString = JSON.stringify(videoInfo, null, 2)
                 // eslint-disable-next-line max-len
                 .replace(/(ip(?:=|%3D|\/))((?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)|[0-9a-f]{1,4}(?:(?::|%3A)[0-9a-f]{1,4}){7})/ig, '$10.0.0.0');
-            return this.generate_dash_file_from_json_data(JSON.parse(jsonString), VideoLength)
+            return this.generate_dash_file_from_json_data(jsonString, VideoLength)
         });
-        console.log(data)
-        return data
     }
 
     static generate_representation_audio(Format) {
-        const representation ={
-            "elements": [
-                {
-                    "type": "element",
-                    "name": "Representation",
-                    "attributes": {
-                        "id": Format.itag,
-                        "codecs": Format.audioCodec,
-                        "bandwidth": Format.bitrate
+        const representation =
+            {
+                "type": "element",
+                "name": "Representation",
+                "attributes": {
+                    "id": Format.itag,
+                    "codecs": Format.audioCodec,
+                    "bandwidth": Format.bitrate
+                },
+                "elements": [
+                    {
+                        "type": "element",
+                        "name": "AudioChannelConfiguration",
+                        "attributes": {
+                            "schemeIdUri": "urn:mpeg:dash:23003:3:audio_channel_configuration:2011",
+                            "value": "2"
+                        },
                     },
-                    "elements": [
-                        {
-                            "type": "element",
-                            "name": "AudioChannelConfiguration",
-                            "attributes": {
-                                "schemeIdUri": "urn:mpeg:dash:23003:3:audio_channel_configuration:2011",
-                                "value": "2"
-                            },
+                    {
+                        "type": "element",
+                        "name": "BaseURL",
+                        "elements": [
+                            {
+                                "type": "text",
+                                "text": Format.url
+                            }
+                        ]
+                    },
+                    {
+                        "type": "element",
+                        "name": "SegmentBase",
+                        "attributes": {
+                            "indexRange": `${Format.indexRange.start}-${Format.indexRange.end}`
                         },
-                        {
-                            "type": "element",
-                            "name": "BaseURL",
-                            "elements": [
-                                {
-                                    "type": "text",
-                                    "text": Format.url
+                        "elements": [
+                            {
+                                "type": "element",
+                                "name": "Initialization",
+                                "attributes": {
+                                    "range": `${Format.initRange.start}-${Format.initRange.end}`
                                 }
-                            ]
-                        },
-                        {
-                            "type": "element",
-                            "name": "SegmentBase",
-                            "attributes": {
-                                "indexRange": `${Format.indexRange.start}-${Format.indexRange.end}`
-                            },
-                            "elements": [
-                                {
-                                    "type": "element",
-                                    "name": "Initialization",
-                                    "attributes": {
-                                        "range": `${Format.initRange.start}-${Format.initRange.end}`
-                                    }
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-        console.log("Rep", representation)
+                            }
+                        ]
+                    }
+                ]
+            }
         return representation
     }
 
     static generate_representation_video(Format) {
-        const representation ={
-            "elements": [
-                {
-                    "type": "element",
-                    "name": "Representation",
-                    "attributes": {
-                        "id": Format.itag,
-                        "codecs": Format.videoCodec,
-                        "bandwidth": Format.bitrate,
-                        "width": Format.width,
-                        "height": Format.height,
-                        "maxPlayoutRate": "1",
-                        "frameRate": Format.fps
+        const representation =
+            {
+                "type": "element",
+                "name": "Representation",
+                "attributes": {
+                    "id": Format.itag,
+                    "codecs": Format.videoCodec,
+                    "bandwidth": Format.bitrate,
+                    "width": Format.width,
+                    "height": Format.height,
+                    "maxPlayoutRate": "1",
+                    "frameRate": Format.fps
+                },
+                "elements": [
+                    {
+                        "type": "element",
+                        "name": "BaseURL",
+                        "elements": [
+                            {
+                                "type": "text",
+                                "text": Format.url
+                            }
+                        ]
                     },
-                    "elements": [
-                        {
-                            "type": "element",
-                            "name": "BaseURL",
-                            "elements": [
-                                {
-                                    "type": "text",
-                                    "text": Format.url
-                                }
-                            ]
+                    {
+                        "type": "element",
+                        "name": "SegmentBase",
+                        "attributes": {
+                            "indexRange": `${Format.indexRange.start}-${Format.indexRange.end}`
                         },
-                        {
-                            "type": "element",
-                            "name": "SegmentBase",
-                            "attributes": {
-                                "indexRange": `${Format.indexRange.start}-${Format.indexRange.end}`
-                            },
-                            "elements": [
-                                {
-                                    "type": "element",
-                                    "name": "Initialization",
-                                    "attributes": {
-                                        "range": `${Format.initRange.start}-${Format.initRange.end}`
-                                    }
+                        "elements": [
+                            {
+                                "type": "element",
+                                "name": "Initialization",
+                                "attributes": {
+                                    "range": `${Format.initRange.start}-${Format.initRange.end}`
                                 }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-        console.log("Rep", representation)
+                            }
+                        ]
+                    }
+                ]
+            }
         return representation
     }
 
@@ -131,6 +121,14 @@ class DashGenerator {
         const mimeObjects = [[]]
         // sort the formats by mime types
         VideoFormatArray.forEach((videoFormat) =>{
+            // the dual formats should not be used
+            if (videoFormat.hasVideo && videoFormat.hasAudio) {
+                return
+            }
+            // if these properties are not available, then we skip it because we cannot set these properties
+            if (!(videoFormat.hasOwnProperty('initRange') && videoFormat.hasOwnProperty('indexRange'))) {
+                return
+            }
             const mimeType = videoFormat.mimeType.split(';')[0]
             const mimeTypeIndex = mimeTypes.indexOf(mimeType)
             if (mimeTypeIndex > -1) {
@@ -142,7 +140,8 @@ class DashGenerator {
             }
         })
         // for each MimeType generate a new Adaptation set with Representations as sub elements
-        for (let i = 0; i < mimeObjects.length; i++) {
+        for (let i = 0; i < mimeTypes.length; i++) {
+            let isVideoFormat = false
             const adapSet = {
                 "type": "element",
                 "name": "AdaptationSet",
@@ -156,9 +155,14 @@ class DashGenerator {
             }
             if (mimeTypes[i].includes("video")) {
                 adapSet.attributes.scanType = "progressive"
+                isVideoFormat = true
             }
             mimeObjects[i].forEach((format) => {
-                adapSet.elements.push(this.generate_representation(format))
+                if (isVideoFormat) {
+                    adapSet.elements.push(this.generate_representation_video(format))
+                } else {
+                    adapSet.elements.push(this.generate_representation_audio(format))
+                }
             })
             adaptationSets.push(adapSet)
         }
