@@ -10,7 +10,7 @@ class DashGenerator {
     }
 
     // if you do not have the data from ytdl-core already, use this function
-    static async get_yt_json_data(VideoId, VideoLength) {
+    static async generate_dash_file_from_json_data_from_id(VideoId, VideoLength) {
         return await ytdl.getInfo(VideoId).then(videoInfo => {
             const jsonString = JSON.stringify(videoInfo, null, 2)
                 // eslint-disable-next-line max-len

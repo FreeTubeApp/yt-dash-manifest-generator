@@ -10,13 +10,20 @@ If this library should not work at some point, please create an issue and let me
 `const ytdashgen = require("yt-dash-manifest-generator")`
 
 ## API
-**scrape_subscriber_count_from_channel('channelURL')**
+**generate_dash_file_from_json_data(JsonStringData, VideoLengthInSeconds)**
 
-Takes a complete channel URL and returns the subscriber count as number.
+Takes a JSON file as string and the length of the video in seconds. Usable when the data from ytdl.getInfo() is already available 
 ```javascript
-ytsubcounter.scrape_subscriber_count_from_channel("https://www.youtube.com/user/YouTube").then((data) =>{
-    console.log(data);
-}).catch((error)=>{
-    console.log(error);
-});
+const xml_string = generate_dash_file_from_json_data(JsonString, VideoLengthInSeconds)
+```
+
+**async generate_dash_file_from_json_data_from_id(VideoId, VideoLength)**
+
+Takes the length of the video in seconds as well as the ID of the video as input and gets the json data itself with yt-dl-core
+```javascript
+generate_dash_file_from_json_data_from_id(VideoId, VideoLength).then((xmlData) => {
+    doSomethingWithXML();
+}).catch((error) =>{
+    console.error(error)
+})
 ```
