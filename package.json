@@ -1,6 +1,6 @@
 {
   "name": "yt-dash-manifest-generator",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GilgusMaximus/yt-subscription-count-scraper"
+    "url": "https://github.com/GilgusMaximus/yt-dash-manifest-generator"
   },
   "keywords": [
     "youtube",
