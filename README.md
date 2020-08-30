@@ -1,6 +1,6 @@
 # YouTube Dash Manifest Generator NodeJS Documentation
 This NodeJS library generates a DASH Manifest file for a YouTube video in order to allow a playback with 1080p+ resolutions. It is developed for and tailored towards easy usage in the [FreeTube](https://github.com/FreeTubeApp/FreeTube-Vue) rewrite but can be used with any other project as well.
-
+It takes the adaptive formats of the response string as input.
 If this library should not work at some point, please create an issue and let me know so that I can take a look into it. Pull requests are also welcomed in this case.
 
 ## Installation
