@@ -3,6 +3,10 @@
   "version": "1.1.0",
   "description": "",
   "main": "index.js",
+  "files": [
+    "index.js",
+    "src/"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -24,7 +28,5 @@
   "dependencies": {
     "xml-js": "^1.6.11",
     "ytdl-core": "^3.2.2"
-  },
-  "devDependencies": {
-    }
   }
+}
