@@ -136,6 +136,9 @@ class DashGenerator {
                 return
             }
             const mimeType = videoFormat.mimeType.split(';')[0]
+            if (mimeType === 'video/mp4' || mimeType === 'audio/mp4' || mimeType === 'audio/webm') {
+              return
+            }
             const mimeTypeIndex = mimeTypes.indexOf(mimeType)
             if (mimeTypeIndex > -1) {
                 mimeObjects[mimeTypeIndex].push(videoFormat)
