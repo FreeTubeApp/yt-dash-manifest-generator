@@ -27,6 +27,6 @@
   "license": "ISC",
   "dependencies": {
     "xml-js": "^1.6.11",
-    "ytdl-core": "^3.2.2"
+    "ytdl-core": "^4.11.1"
   }
 }
