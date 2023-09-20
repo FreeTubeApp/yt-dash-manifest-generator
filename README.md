@@ -1,3 +1,6 @@
+# No Longer Maintained
+This repository is no longer maintained. The functionality of this project has been merged into [YouTube.js](https://github.com/LuanRT/YouTube.js). We highly recommend switching to that package in order to have the latest functionality. We cannot promise stability if you continue to use this package as is.
+
 # YouTube Dash Manifest Generator NodeJS Documentation
 This NodeJS library generates a DASH Manifest file for a YouTube video in order to allow a playback with 1080p+ resolutions. It is developed for and tailored towards easy usage in [FreeTube](https://github.com/FreeTubeApp/FreeTube) but can be used with any other project as well.
 It takes the adaptive formats of the response string as input.
